@@ -1,4 +1,6 @@
 This is a studying project for implementing basic machine learning.
 
+$ virtualenv env
+$ source env/bin/activate
 $ make bootstrap
 $ dummy
