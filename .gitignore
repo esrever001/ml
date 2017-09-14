@@ -1,0 +1,5 @@
+env/
+*.egg-info/
+data/dataset/*
+*.pyc
+.vscode/

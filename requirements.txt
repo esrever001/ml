@@ -1,0 +1,5 @@
+setuptools>=36.4.0
+PIL
+numpy
+tensorflow
+tabulate
