@@ -75,7 +75,7 @@ class TfSimpleNetwork(Model):
 
         self.metrics['accuracy'] = accuracy.eval(
             feed_dict={
-                x: self.data.test_instances, 
+                x: self.data.test_instances,
                 y_: self.data.test_one_hot_labels,
                 keep_prob: 1.0
             }

@@ -108,8 +108,14 @@ class Data(object):
         self.one_hot_label_generated = True
 
     def GetDebugTable(self):
+        unique_labels = np.unique(self.training_labels)
         return ["dataset_name", "dims", "training_num", "test_num", "training_labels"], \
-            [self.name, self.dims, self.training_num, self.test_num, np.unique(self.training_labels)]
+            [
+                self.name, self.dims,
+                self.training_num,
+                self.test_num,
+                unique_labels if len(unique_labels) <= 10 else "%d types" % len(unique_labels),
+            ]
 
 
 class SplitableData(Data):

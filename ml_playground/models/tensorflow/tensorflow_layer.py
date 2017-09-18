@@ -21,7 +21,7 @@ class ConvLayer(Layer):
     def __init__(
         self, patch_height, patch_width,
         input_features_num, output_features_num,
-        conv_args={'strides': [1, 1, 1, 1], 'padding': 'SAME'},        
+        conv_args={'strides': [1, 1, 1, 1], 'padding': 'SAME'},
         acitivate_func=tf.nn.relu,
         max_pool_args=None, **args
     ):
@@ -38,8 +38,8 @@ class ConvLayer(Layer):
     def GetOutputLayer(self):
         conv_layer = self.input_layer
         shape = [self.patch_height, self.patch_width, self.input_features_num, self.output_features_num]
-        self.weight = tf.Variable(tf.truncated_normal(shape, stddev=0.1))
-        self.bias = tf.Variable(tf.constant(0.1, shape=[self.output_features_num]))
+        self.weight = tf.Variable(tf.truncated_normal(shape, stddev=0.1)) if self.weight is None else self.weight
+        self.bias = tf.Variable(tf.constant(0.1, shape=[self.output_features_num])) if self.bias is None else self.bias
         conv_layer = tf.nn.conv2d(self.input_layer, self.weight, **self.conv_args)
 
         self.output_layer = conv_layer + self.bias
@@ -55,8 +55,9 @@ class DenselyConnectedLayer(Layer):
         self.bias = None
 
     def GetOutputLayer(self):
-        self.weight = tf.Variable(tf.truncated_normal([self.input_neuron_num, self.output_neuron_num], stddev=0.1))
-        self.bias = tf.Variable(tf.constant(0.1, shape=[self.output_neuron_num]))
+        self.weight = tf.Variable(tf.truncated_normal([self.input_neuron_num, self.output_neuron_num], stddev=0.1)) \
+            if self.weight is None else self.weight
+        self.bias = tf.Variable(tf.constant(0.1, shape=[self.output_neuron_num])) if self.bias is None else self.bias
         input_flat_layer = tf.reshape(self.input_layer, [-1, self.input_neuron_num])
 
         self.output_layer = tf.matmul(input_flat_layer, self.weight) + self.bias
@@ -82,8 +83,9 @@ class ReadoutLayer(Layer):
         self.bias = None
 
     def GetOutputLayer(self):
-        self.weight = tf.Variable(tf.truncated_normal([self.input_neuron_num, self.output_neuron_num], stddev=0.1))
-        self.bias = tf.Variable(tf.constant(0.1, shape=[self.output_neuron_num]))
+        self.weight = tf.Variable(tf.truncated_normal([self.input_neuron_num, self.output_neuron_num], stddev=0.1)) \
+            if self.weight is None else self.weight
+        self.bias = tf.Variable(tf.constant(0.1, shape=[self.output_neuron_num])) if self.bias is None else self.bias
 
         self.output_layer = tf.matmul(self.input_layer, self.weight) + self.bias
         return super(ReadoutLayer, self).GetOutputLayer()
