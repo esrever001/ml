@@ -117,6 +117,13 @@ class Data(object):
                 unique_labels if len(unique_labels) <= 10 else "%d types" % len(unique_labels),
             ]
 
+    def DebugTrainingInstance(self, index):
+        if index >= self.training_num:
+            return
+        print("instacen: ")
+        print(self.training_instances[index])
+        print("label: %d" % self.training_labels[index])
+
 
 class SplitableData(Data):
     def __init__(self, **args):

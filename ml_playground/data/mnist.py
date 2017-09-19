@@ -4,6 +4,7 @@ from ml_playground.data.base import Data
 from ml_playground.utils.data import ConvertByteDataToNum, Standardized
 from ml_playground.utils.visual import PrintProgress
 import numpy as np
+from PIL import Image
 
 
 class MNIST(Data):
@@ -68,3 +69,12 @@ class MNIST(Data):
             instances[index] = img
 
         return total_cnt, np.asarray(instances)
+
+    def DebugTrainingInstance(self, index):
+        if index >= self.training_num:
+            return
+        super(MNIST, self).DebugTrainingInstance(index)
+        img = Image.new('RGB', (28, 28))
+        instance = [int(element * 255.0) for element in self.training_instances[index].tolist()]
+        img.putdata(instance)
+        img.show()

@@ -1,5 +1,5 @@
 setuptools>=36.4.0
-PIL
+Pillow
 numpy
 tensorflow
 tabulate
