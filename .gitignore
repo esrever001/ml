@@ -4,3 +4,4 @@ ml_playground/data/dataset/*
 *.pyc
 .vscode/
 debug.py
+tmp/

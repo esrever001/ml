@@ -14,7 +14,7 @@ setup(
     description=("A toolkit to play with different machine learning algos."),
     url="https://github.com/esrever001/ml",
     packages=find_packages(),
-    long_description=read('README'),
+    long_description=read('README.md'),
         entry_points={
         'console_scripts': [
             'dummy =  ml_playground.pipelines.dummy:dummy_pipeline',
