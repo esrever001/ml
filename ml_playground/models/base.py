@@ -18,5 +18,7 @@ class Model(object):
         pass
 
     def GetDebugTable(self):
-        dataset_header, dataset_data = self.data.GetDebugTable() if self.data else ([], [])
-        return dataset_header + ["model_naame"] + self.metrics.keys(), dataset_data + [self.name] + self.metrics.values()
+        dataset_header, dataset_data = self.data.GetDebugTable(
+        ) if self.data else ([], [])
+        return dataset_header + ["model_naame"] + self.metrics.keys(
+        ), dataset_data + [self.name] + self.metrics.values()

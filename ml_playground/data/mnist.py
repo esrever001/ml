@@ -23,22 +23,26 @@ class MNIST(Data):
 
     def LoadTrainData(self):
         super(MNIST, self).LoadTrainData()
-        self.training_num, self.training_instances = self.__readInstanceFile(self.TRAINING_INSTANCE_FILE)
-        _, self.training_labels = self.__readLabelFile(self.TRAINING_LABEL_FILE)
+        self.training_num, self.training_instances = self.__readInstanceFile(
+            self.TRAINING_INSTANCE_FILE)
+        _, self.training_labels = self.__readLabelFile(
+            self.TRAINING_LABEL_FILE)
 
     def LoadTestData(self):
         super(MNIST, self).LoadTestData()
-        self.test_num, self.test_instances = self.__readInstanceFile(self.TEST_INSTANCE_FILE)
+        self.test_num, self.test_instances = self.__readInstanceFile(
+            self.TEST_INSTANCE_FILE)
         _, self.test_labels = self.__readLabelFile(self.TEST_LABEL_FILE)
 
     def Init(self):
         super(MNIST, self).Init()
-        self.training_instances, self.test_instances = Standardized(self.training_instances, self.test_instances)
+        self.training_instances, self.test_instances = Standardized(
+            self.training_instances, self.test_instances)
 
     def __readLabelFile(self, filename):
         input_file = open(filename, "rb")
         magic_number = ConvertByteDataToNum(input_file.read(4))
-        assert(magic_number == 2049)
+        assert (magic_number == 2049)
         total_cnt = ConvertByteDataToNum(input_file.read(4))
         labels = range(total_cnt)
 
@@ -52,7 +56,7 @@ class MNIST(Data):
     def __readInstanceFile(self, filename):
         input_file = open(filename, "rb")
         magic_number = ConvertByteDataToNum(input_file.read(4))
-        assert(magic_number == 2051)
+        assert (magic_number == 2051)
         total_cnt = ConvertByteDataToNum(input_file.read(4))
         rows = ConvertByteDataToNum(input_file.read(4))
         cols = ConvertByteDataToNum(input_file.read(4))
@@ -75,6 +79,9 @@ class MNIST(Data):
             return
         super(MNIST, self).DebugTrainingInstance(index)
         img = Image.new('RGB', (28, 28))
-        instance = [int(element * 255.0) for element in self.training_instances[index].tolist()]
+        instance = [
+            int(element * 255.0)
+            for element in self.training_instances[index].tolist()
+        ]
         img.putdata(instance)
         img.show()

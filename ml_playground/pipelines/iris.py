@@ -11,12 +11,12 @@ def iris_pipeline():
     data2 = Iris(ratio=0.5)
     data2.Init()
     models = [
-        TfSoftmax(data1, silent=True,  batch_size=50, steps=100),
-        TfSoftmax(data1, silent=True,  batch_size=150, steps=100),
-        TfSoftmax(data1, silent=True,  batch_size=150, steps=1000),
-        TfSoftmax(data2, silent=True,  batch_size=50, steps=100),
-        TfSoftmax(data2, silent=True,  batch_size=150, steps=100),
-        TfSoftmax(data2, silent=True,  batch_size=150, steps=1000),
+        TfSoftmax(data1, silent=True, batch_size=50, steps=100),
+        TfSoftmax(data1, silent=True, batch_size=150, steps=100),
+        TfSoftmax(data1, silent=True, batch_size=150, steps=1000),
+        TfSoftmax(data2, silent=True, batch_size=50, steps=100),
+        TfSoftmax(data2, silent=True, batch_size=150, steps=100),
+        TfSoftmax(data2, silent=True, batch_size=150, steps=1000),
     ]
     for model in models:
         model.Train()

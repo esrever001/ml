@@ -22,7 +22,8 @@ class TfSimpleNetwork(Model):
         start_time = time.time()
 
         x = tf.placeholder(tf.float32, [None, self.data.dims])
-        self.W = tf.Variable(tf.zeros([self.data.dims, self.data.max_label + 1]))
+        self.W = tf.Variable(
+            tf.zeros([self.data.dims, self.data.max_label + 1]))
         self.b = tf.Variable(tf.zeros([self.data.max_label + 1]))
         y_ = tf.placeholder(tf.float32, [None, self.data.max_label + 1])
 
@@ -43,7 +44,7 @@ class TfSimpleNetwork(Model):
         W_fc1 = weight_variable([7 * 7 * 64, 1024])
         b_fc1 = bias_variable([1024])
 
-        h_pool2_flat = tf.reshape(h_pool2, [-1, 7*7*64])
+        h_pool2_flat = tf.reshape(h_pool2, [-1, 7 * 7 * 64])
         h_fc1 = tf.nn.relu(tf.matmul(h_pool2_flat, W_fc1) + b_fc1)
 
         keep_prob = tf.placeholder(tf.float32)
@@ -66,20 +67,25 @@ class TfSimpleNetwork(Model):
             if not self.silent:
                 PrintProgress(index + 1, self.steps, "Training")
             batch_xs, _, batch_ys = self.data.GetNextBatch(self.batch_size)
-            self.sess.run(train_step, feed_dict={x: batch_xs, y_: batch_ys, keep_prob: 0.5})
+            self.sess.run(
+                train_step,
+                feed_dict={x: batch_xs,
+                           y_: batch_ys,
+                           keep_prob: 0.5})
         elapsed_time = time.time() - start_time
         self.metrics['training_time'] = elapsed_time
 
         correct_prediction = tf.equal(tf.argmax(y_conv, 1), tf.argmax(y_, 1))
         accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
 
-        self.metrics['accuracy'] = accuracy.eval(
-            feed_dict={
-                x: self.data.test_instances,
-                y_: self.data.test_one_hot_labels,
-                keep_prob: 1.0
-            }
-        )
+        self.metrics['accuracy'] = accuracy.eval(feed_dict={
+            x:
+            self.data.test_instances,
+            y_:
+            self.data.test_one_hot_labels,
+            keep_prob:
+            1.0
+        })
 
     def Eval(self):
         if self.sess is None or self.W is None or self.b is None:
@@ -94,18 +100,19 @@ class TfSimpleNetwork(Model):
 
 
 def weight_variable(shape):
-        initial = tf.truncated_normal(shape, stddev=0.1)
-        return tf.Variable(initial)
+    initial = tf.truncated_normal(shape, stddev=0.1)
+    return tf.Variable(initial)
 
 
 def bias_variable(shape):
-        initial = tf.constant(0.1, shape=shape)
-        return tf.Variable(initial)
+    initial = tf.constant(0.1, shape=shape)
+    return tf.Variable(initial)
 
 
 def conv2d(x, W):
-        return tf.nn.conv2d(x, W, strides=[1, 1, 1, 1], padding='SAME')
+    return tf.nn.conv2d(x, W, strides=[1, 1, 1, 1], padding='SAME')
 
 
 def max_pool_2x2(x):
-        return tf.nn.max_pool(x, ksize=[1, 2, 2, 1], strides=[1, 2, 2, 1], padding='SAME')
+    return tf.nn.max_pool(
+        x, ksize=[1, 2, 2, 1], strides=[1, 2, 2, 1], padding='SAME')

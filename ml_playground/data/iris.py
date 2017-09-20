@@ -19,7 +19,6 @@ class Iris(SplitableData):
             "Iris-setosa": 0,
             "Iris-versicolor": 1,
             "Iris-virginica": 2,
-
             0: "Iris-setosa",
             1: "Iris-versicolor",
             2: "Iris-virginica",
@@ -30,7 +29,8 @@ class Iris(SplitableData):
 
     def Init(self):
         super(Iris, self).Init()
-        self.training_instances, self.test_instances = Standardized(self.training_instances, self.test_instances)
+        self.training_instances, self.test_instances = Standardized(
+            self.training_instances, self.test_instances)
 
     def __readFile(self, filename):
         input_file = open(filename, "rb")
@@ -44,4 +44,6 @@ class Iris(SplitableData):
             instances.append(instance)
             labels.append(int(label))
 
-        return np.asarray(instances, dtype=np.float64), np.asarray(labels, dtype=np.int)
+        return np.asarray(
+            instances, dtype=np.float64), np.asarray(
+                labels, dtype=np.int)

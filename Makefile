@@ -29,3 +29,7 @@ lint:
 .PHONY: shell
 shell:
 	ipython
+
+.PHONY: fmt
+fmt:
+	yapf ml_playground/* --recursive -e *.pyc -i --style pep8
