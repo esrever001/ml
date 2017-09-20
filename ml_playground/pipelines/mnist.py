@@ -7,8 +7,7 @@ from ml_playground.models.tensorflow.tf_softmax import TfSoftmax
 from ml_playground.models.tensorflow.tf_simple_network import TfSimpleNetwork
 from ml_playground.models.tensorflow.tf_simple_network_layers import TfSimpleNetworkLayers
 from ml_playground.utils.visual import PrintModels
-from ml_playground.models.tensorflow.tensorflow_layer import (
-    ConvLayer, DenselyConnectedLayer, DropoutLayer, ReadoutLayer)
+from ml_playground.models.tensorflow.tensorflow_layer import (ConvLayer, DenselyConnectedLayer, DropoutLayer, ReadoutLayer)
 
 
 def mnist_pipeline():
@@ -43,7 +42,8 @@ def mnist_pipeline():
                         "ksize": [1, 2, 2, 1],
                         "strides": [1, 2, 2, 1],
                         "padding": 'SAME',
-                    }),
+                    }
+                ),
                 ConvLayer(
                     patch_height=5,
                     patch_width=5,
@@ -53,15 +53,19 @@ def mnist_pipeline():
                         "ksize": [1, 2, 2, 1],
                         "strides": [1, 2, 2, 1],
                         "padding": 'SAME',
-                    }),
+                    }
+                ),
                 DenselyConnectedLayer(
                     input_neuron_num=7 * 7 * 64,
-                    output_neuron_num=1024, ),
+                    output_neuron_num=1024,
+                ),
                 DropoutLayer(keep_prob=keep_prob, ),
                 ReadoutLayer(
                     input_neuron_num=1024,
-                    output_neuron_num=10, ),
-            ]),
+                    output_neuron_num=10,
+                ),
+            ]
+        ),
         TfSimpleNetwork(data, silent=False, batch_size=50, steps=1000),
     ]
     for model in models:

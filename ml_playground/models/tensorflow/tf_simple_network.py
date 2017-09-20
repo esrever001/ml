@@ -22,8 +22,7 @@ class TfSimpleNetwork(Model):
         start_time = time.time()
 
         x = tf.placeholder(tf.float32, [None, self.data.dims])
-        self.W = tf.Variable(
-            tf.zeros([self.data.dims, self.data.max_label + 1]))
+        self.W = tf.Variable(tf.zeros([self.data.dims, self.data.max_label + 1]))
         self.b = tf.Variable(tf.zeros([self.data.max_label + 1]))
         y_ = tf.placeholder(tf.float32, [None, self.data.max_label + 1])
 
@@ -55,8 +54,7 @@ class TfSimpleNetwork(Model):
 
         y_conv = tf.matmul(h_fc1_drop, W_fc2) + b_fc2
 
-        cross_entropy = tf.reduce_mean(
-            tf.nn.softmax_cross_entropy_with_logits(labels=y_, logits=y_conv))
+        cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(labels=y_, logits=y_conv))
 
         train_step = tf.train.AdamOptimizer(1e-4).minimize(cross_entropy)
 
@@ -67,25 +65,18 @@ class TfSimpleNetwork(Model):
             if not self.silent:
                 PrintProgress(index + 1, self.steps, "Training")
             batch_xs, _, batch_ys = self.data.GetNextBatch(self.batch_size)
-            self.sess.run(
-                train_step,
-                feed_dict={x: batch_xs,
-                           y_: batch_ys,
-                           keep_prob: 0.5})
+            self.sess.run(train_step, feed_dict={x: batch_xs, y_: batch_ys, keep_prob: 0.5})
         elapsed_time = time.time() - start_time
         self.metrics['training_time'] = elapsed_time
 
         correct_prediction = tf.equal(tf.argmax(y_conv, 1), tf.argmax(y_, 1))
         accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
 
-        self.metrics['accuracy'] = accuracy.eval(feed_dict={
-            x:
-            self.data.test_instances,
-            y_:
-            self.data.test_one_hot_labels,
-            keep_prob:
-            1.0
-        })
+        self.metrics['accuracy'] = accuracy.eval(
+            feed_dict={x: self.data.test_instances,
+                       y_: self.data.test_one_hot_labels,
+                       keep_prob: 1.0}
+        )
 
     def Eval(self):
         if self.sess is None or self.W is None or self.b is None:
@@ -114,5 +105,4 @@ def conv2d(x, W):
 
 
 def max_pool_2x2(x):
-    return tf.nn.max_pool(
-        x, ksize=[1, 2, 2, 1], strides=[1, 2, 2, 1], padding='SAME')
+    return tf.nn.max_pool(x, ksize=[1, 2, 2, 1], strides=[1, 2, 2, 1], padding='SAME')

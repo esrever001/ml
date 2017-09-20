@@ -12,30 +12,26 @@ class Layer(object):
 
     def GetOutputLayer(self):
         self.output_layer = self.output_layer if self.output_layer is not None else self.input_layer
-        self.output_layer = self.acitivate_func(
-            self.output_layer
-        ) if self.acitivate_func is not None else self.output_layer
-        self.output_layer = self.pool_func(
-            self.output_layer
-        ) if self.pool_func is not None else self.output_layer
+        self.output_layer = self.acitivate_func(self.output_layer) if self.acitivate_func is not None else self.output_layer
+        self.output_layer = self.pool_func(self.output_layer) if self.pool_func is not None else self.output_layer
         return self.output_layer
 
 
 class ConvLayer(Layer):
-    def __init__(self,
-                 patch_height,
-                 patch_width,
-                 input_features_num,
-                 output_features_num,
-                 conv_args={'strides': [1, 1, 1, 1],
-                            'padding': 'SAME'},
-                 acitivate_func=tf.nn.relu,
-                 max_pool_args=None,
-                 **args):
-        pool_func = (lambda x: tf.nn.max_pool(x, **max_pool_args)
-                     ) if max_pool_args is not None else None
-        super(ConvLayer, self).__init__(
-            acitivate_func=acitivate_func, pool_func=pool_func, **args)
+    def __init__(
+            self,
+            patch_height,
+            patch_width,
+            input_features_num,
+            output_features_num,
+            conv_args={'strides': [1, 1, 1, 1],
+                       'padding': 'SAME'},
+            acitivate_func=tf.nn.relu,
+            max_pool_args=None,
+            **args
+    ):
+        pool_func = (lambda x: tf.nn.max_pool(x, **max_pool_args)) if max_pool_args is not None else None
+        super(ConvLayer, self).__init__(acitivate_func=acitivate_func, pool_func=pool_func, **args)
         self.patch_height = patch_height
         self.patch_width = patch_width
         self.input_features_num = input_features_num
@@ -46,17 +42,10 @@ class ConvLayer(Layer):
 
     def GetOutputLayer(self):
         conv_layer = self.input_layer
-        shape = [
-            self.patch_height, self.patch_width, self.input_features_num,
-            self.output_features_num
-        ]
-        self.weight = tf.Variable(tf.truncated_normal(
-            shape, stddev=0.1)) if self.weight is None else self.weight
-        self.bias = tf.Variable(
-            tf.constant(0.1, shape=[self.output_features_num
-                                    ])) if self.bias is None else self.bias
-        conv_layer = tf.nn.conv2d(self.input_layer, self.weight,
-                                  **self.conv_args)
+        shape = [self.patch_height, self.patch_width, self.input_features_num, self.output_features_num]
+        self.weight = tf.Variable(tf.truncated_normal(shape, stddev=0.1)) if self.weight is None else self.weight
+        self.bias = tf.Variable(tf.constant(0.1, shape=[self.output_features_num])) if self.bias is None else self.bias
+        conv_layer = tf.nn.conv2d(self.input_layer, self.weight, **self.conv_args)
 
         self.output_layer = conv_layer + self.bias
         return super(ConvLayer, self).GetOutputLayer()
@@ -73,14 +62,10 @@ class DenselyConnectedLayer(Layer):
     def GetOutputLayer(self):
         self.weight = tf.Variable(tf.truncated_normal([self.input_neuron_num, self.output_neuron_num], stddev=0.1)) \
             if self.weight is None else self.weight
-        self.bias = tf.Variable(
-            tf.constant(0.1, shape=[self.output_neuron_num
-                                    ])) if self.bias is None else self.bias
-        input_flat_layer = tf.reshape(self.input_layer,
-                                      [-1, self.input_neuron_num])
+        self.bias = tf.Variable(tf.constant(0.1, shape=[self.output_neuron_num])) if self.bias is None else self.bias
+        input_flat_layer = tf.reshape(self.input_layer, [-1, self.input_neuron_num])
 
-        self.output_layer = tf.matmul(input_flat_layer,
-                                      self.weight) + self.bias
+        self.output_layer = tf.matmul(input_flat_layer, self.weight) + self.bias
         return super(DenselyConnectedLayer, self).GetOutputLayer()
 
 
@@ -105,12 +90,9 @@ class ReadoutLayer(Layer):
     def GetOutputLayer(self):
         self.weight = tf.Variable(tf.truncated_normal([self.input_neuron_num, self.output_neuron_num], stddev=0.1)) \
             if self.weight is None else self.weight
-        self.bias = tf.Variable(
-            tf.constant(0.1, shape=[self.output_neuron_num
-                                    ])) if self.bias is None else self.bias
+        self.bias = tf.Variable(tf.constant(0.1, shape=[self.output_neuron_num])) if self.bias is None else self.bias
 
-        self.output_layer = tf.matmul(self.input_layer,
-                                      self.weight) + self.bias
+        self.output_layer = tf.matmul(self.input_layer, self.weight) + self.bias
         return super(ReadoutLayer, self).GetOutputLayer()
 
 

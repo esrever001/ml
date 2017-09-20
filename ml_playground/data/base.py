@@ -4,11 +4,7 @@ import numpy as np
 
 
 class Data(object):
-    def __init__(self,
-                 silent=False,
-                 split_data=False,
-                 ratio=0.8,
-                 sematic_label=False):
+    def __init__(self, silent=False, split_data=False, ratio=0.8, sematic_label=False, sematic_label_mapping={}):
         self.name = "base"
         self.dims = 0
         self.instance_num = 0
@@ -30,7 +26,7 @@ class Data(object):
         self.split_data = split_data
         self.ratio = ratio
         self.sematic_label = sematic_label
-        self.sematic_label_mapping = {}
+        self.sematic_label_mapping = sematic_label_mapping
 
     def Init(self):
         if self.split_data:
@@ -55,15 +51,12 @@ class Data(object):
         test_instances = []
         for index in range(self.training_num):
             training_instances.append(self.instances[idx[index]])
-            self.training_labels = np.append(self.training_labels,
-                                             self.labels[idx[index]])
+            self.training_labels = np.append(self.training_labels, self.labels[idx[index]])
         self.training_instances = np.asarray(training_instances)
         self.training_labels = self.training_labels.astype(int)
         for index in range(self.test_num):
-            test_instances.append(
-                self.instances[idx[self.training_num + index]])
-            self.test_labels = np.append(
-                self.test_labels, self.labels[idx[self.training_num + index]])
+            test_instances.append(self.instances[idx[self.training_num + index]])
+            self.test_labels = np.append(self.test_labels, self.labels[idx[self.training_num + index]])
         self.test_instances = np.asarray(test_instances)
         self.test_labels = self.test_labels.astype(int)
 
@@ -82,21 +75,11 @@ class Data(object):
             np.random.shuffle(self.randomized_indexes)
             self.current_index = 0
 
-        dataShuffled = [
-            self.training_instances[i]
-            for i in self.randomized_indexes[self.current_index:
-                                             self.current_index + num]
-        ]
-        labelsShuffled = [
-            self.training_labels[i]
-            for i in self.randomized_indexes[self.current_index:
-                                             self.current_index + num]
-        ]
+        dataShuffled = [self.training_instances[i] for i in self.randomized_indexes[self.current_index:self.current_index + num]]
+        labelsShuffled = [self.training_labels[i] for i in self.randomized_indexes[self.current_index:self.current_index + num]]
         if self.one_hot_label_generated:
             oneHotLabelsShuffled = [
-                self.training_one_hot_labels[i]
-                for i in self.randomized_indexes[self.current_index:
-                                                 self.current_index + num]
+                self.training_one_hot_labels[i] for i in self.randomized_indexes[self.current_index:self.current_index + num]
             ]
 
         self.current_index += num
@@ -109,20 +92,15 @@ class Data(object):
     def __generate_one_hot_lables(self):
         self.max_label = int(max(self.training_labels))
 
-        self.training_one_hot_labels = np.zeros(
-            self.training_num * (self.max_label + 1)).reshape(
-                self.training_num, self.max_label + 1)
+        self.training_one_hot_labels = np.zeros(self.training_num *
+                                                (self.max_label + 1)).reshape(self.training_num, self.max_label + 1)
         for index in range(self.training_num):
-            self.training_one_hot_labels[index][self.training_labels[
-                index]] = 1
+            self.training_one_hot_labels[index][self.training_labels[index]] = 1
 
-        self.test_one_hot_labels = np.zeros(
-            self.test_num * (self.max_label + 1)).reshape(
-                self.test_num, self.max_label + 1)
+        self.test_one_hot_labels = np.zeros(self.test_num * (self.max_label + 1)).reshape(self.test_num, self.max_label + 1)
         for index in range(self.test_num):
             if self.test_labels[index] > self.max_label:
-                raise Exception("Test label are not seen in traning data %d" %
-                                self.test_labels[index])
+                raise Exception("Test label are not seen in traning data %d" % self.test_labels[index])
             else:
                 self.test_one_hot_labels[index][self.test_labels[index]] = 1
 
@@ -143,7 +121,8 @@ class Data(object):
             return
         print("instacen: ")
         print(self.training_instances[index])
-        print("label: %d" % self.training_labels[index])
+        label_name = self.sematic_label_mapping[self.training_labels[index]] if self.sematic_label else ""
+        print("label: %d %s" % self.training_labels[index], label_name)
 
 
 class SplitableData(Data):

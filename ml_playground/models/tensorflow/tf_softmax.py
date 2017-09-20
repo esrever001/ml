@@ -21,16 +21,13 @@ class TfSoftmax(Model):
         self.metrics['accuracy'] = 'N/A'
         start_time = time.time()
         x = tf.placeholder(tf.float32, [None, self.data.dims])
-        self.W = tf.Variable(
-            tf.zeros([self.data.dims, self.data.max_label + 1]))
+        self.W = tf.Variable(tf.zeros([self.data.dims, self.data.max_label + 1]))
         self.b = tf.Variable(tf.zeros([self.data.max_label + 1]))
         y = tf.nn.softmax(tf.matmul(x, self.W) + self.b)
         y_ = tf.placeholder(tf.float32, [None, self.data.max_label + 1])
-        cross_entropy = tf.reduce_mean(
-            tf.nn.softmax_cross_entropy_with_logits(labels=y_, logits=y))
+        cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(labels=y_, logits=y))
 
-        train_step = tf.train.GradientDescentOptimizer(0.5).minimize(
-            cross_entropy)
+        train_step = tf.train.GradientDescentOptimizer(0.5).minimize(cross_entropy)
         self.sess = tf.InteractiveSession()
         tf.global_variables_initializer().run()
 
@@ -52,12 +49,7 @@ class TfSoftmax(Model):
 
         correct_prediction = tf.equal(tf.argmax(y, 1), tf.argmax(y_, 1))
         accuracy_eval = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
-        accuracy = self.sess.run(
-            accuracy_eval,
-            feed_dict={
-                x: self.data.test_instances,
-                y_: self.data.test_one_hot_labels
-            })
+        accuracy = self.sess.run(accuracy_eval, feed_dict={x: self.data.test_instances, y_: self.data.test_one_hot_labels})
         self.metrics['accuracy'] = accuracy
         return accuracy
 

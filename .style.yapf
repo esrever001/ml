@@ -1,0 +1,7 @@
+[style]
+based_on_style = pep8
+allow_multiline_lambdas = true
+split_before_logical_operator = true
+column_limit=130
+dedent_closing_brackets=true
+split_before_first_argument=true

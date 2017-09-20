@@ -32,4 +32,4 @@ shell:
 
 .PHONY: fmt
 fmt:
-	yapf ml_playground/* --recursive -e *.pyc -i --style pep8
+	yapf ml_playground/* --recursive -e *.pyc -i

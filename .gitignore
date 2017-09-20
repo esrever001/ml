@@ -1,6 +1,6 @@
 env/
 *.egg-info/
-data/dataset/*
+ml_playground/data/dataset/*
 *.pyc
 .vscode/
 debug.py

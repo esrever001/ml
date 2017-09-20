@@ -9,16 +9,18 @@ from ml_playground.models.tensorflow.tensorflow_layer import GetNetwork
 
 
 class TfSimpleNetworkLayers(Model):
-    def __init__(self,
-                 data,
-                 layers,
-                 input_reshape=None,
-                 tf_extra_train_args={},
-                 tf_extra_test_args={},
-                 tf_extra_variables={},
-                 batch_size=100,
-                 steps=1000,
-                 **args):
+    def __init__(
+            self,
+            data,
+            layers,
+            input_reshape=None,
+            tf_extra_train_args={},
+            tf_extra_test_args={},
+            tf_extra_variables={},
+            batch_size=100,
+            steps=1000,
+            **args
+    ):
         super(TfSimpleNetworkLayers, self).__init__(data, **args)
         self.name = 'TF Conv Network layer'
         self.batch_size = batch_size
@@ -43,8 +45,7 @@ class TfSimpleNetworkLayers(Model):
 
         y_conv = GetNetwork(x_input, self.layers)
 
-        cross_entropy = tf.reduce_mean(
-            tf.nn.softmax_cross_entropy_with_logits(labels=y_, logits=y_conv))
+        cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(labels=y_, logits=y_conv))
 
         train_step = tf.train.AdamOptimizer(1e-4).minimize(cross_entropy)
 
@@ -76,10 +77,7 @@ class TfSimpleNetworkLayers(Model):
 
         correct_prediction = tf.equal(tf.argmax(y_conv, 1), tf.argmax(y_, 1))
         accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
-        feed_dict = {
-            x: self.data.test_instances,
-            y_: self.data.test_one_hot_labels
-        }
+        feed_dict = {x: self.data.test_instances, y_: self.data.test_one_hot_labels}
         feed_dict.update(self.tf_extra_test_args)
         self.metrics['accuracy'] = accuracy.eval(feed_dict=feed_dict, )
 
