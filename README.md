@@ -34,3 +34,13 @@ wget https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data -P
 mkdir -p ml_playground/data/dataset/iris/
 cp tmp/iris/* ml_playground/data/dataset/iris/
 ```
+
+CIFAR-10 (http://www.cs.toronto.edu/~kriz/cifar.html)
+----------
+```
+mdkir tmp/cifar-10
+wget http://www.cs.toronto.edu/~kriz/cifar-10-python.tar.gz -P tmp/cifar-10/
+tar  -xvzf tmp/cifar-10/cifar-10-python.tar.gz --directory tmp/cifar-10/
+mkdir -p ml_playground/data/dataset/cifar-10/
+cp tmp/cifar-10/cifar-10-batches-py/* ml_playground/data/dataset/cifar-10/
+```
