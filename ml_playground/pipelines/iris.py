@@ -1,7 +1,7 @@
 from __future__ import absolute_import
 
 from ml_playground.data.iris import Iris
-from ml_playground.models.tf_softmax import TfSoftmax
+from ml_playground.models.tensorflow.tf_softmax import TfSoftmax
 from ml_playground.utils.visual import PrintModels
 
 

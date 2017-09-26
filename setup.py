@@ -20,6 +20,7 @@ setup(
             'dummy =  ml_playground.pipelines.dummy:dummy_pipeline',
             'mnist =  ml_playground.pipelines.mnist:mnist_pipeline',
             'iris =  ml_playground.pipelines.iris:iris_pipeline',
+            'cifar10 =  ml_playground.pipelines.cifar10:cifar10_pipeline',
         ]
     },
 )

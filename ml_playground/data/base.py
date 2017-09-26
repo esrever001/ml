@@ -35,6 +35,8 @@ class Data(object):
         else:
             self.LoadTrainData()
             self.LoadTestData()
+        self.raw_training_instances = self.training_instances
+        self.raw_test_instances = self.test_instances
         self.__generate_one_hot_lables()
 
     def LoadData(self):
@@ -122,7 +124,7 @@ class Data(object):
         print("instacen: ")
         print(self.training_instances[index])
         label_name = self.sematic_label_mapping[self.training_labels[index]] if self.sematic_label else ""
-        print("label: %d %s" % self.training_labels[index], label_name)
+        print("label: %d %s" % (self.training_labels[index], label_name))
 
 
 class SplitableData(Data):

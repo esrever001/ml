@@ -74,7 +74,7 @@ class MNIST(Data):
         if index >= self.training_num:
             return
         super(MNIST, self).DebugTrainingInstance(index)
-        img = Image.new('RGB', (28, 28))
-        instance = [int(element * 255.0) for element in self.training_instances[index].tolist()]
+        img = Image.new('L', (28, 28))
+        instance = [int(element * 255.0) for element in self.raw_training_instances[index].tolist()]
         img.putdata(instance)
         img.show()
